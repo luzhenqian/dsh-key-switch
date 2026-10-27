@@ -1,0 +1,64 @@
+{
+  "name": "dsh-key-switch",
+  "version": "0.1.0",
+  "description": "DeepSeek Harness plugin: keep several DeepSeek API keys, switch the active one in one click, and see each key's live balance in the sidebar. 多个 API Key 池 + 一键切换 + 实时余额。",
+  "type": "module",
+  "license": "MIT",
+  "author": "NoahLu <15753140326@163.com>",
+  "homepage": "https://github.com/luzhenqian/dsh-key-switch#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luzhenqian/dsh-key-switch.git"
+  },
+  "bugs": {
+    "url": "https://github.com/luzhenqian/dsh-key-switch/issues"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "dsh-bundle",
+    "deepseek-harness",
+    "deepseek",
+    "api-key",
+    "key-switch",
+    "balance",
+    "quota",
+    "cordis"
+  ],
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "README.en.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-settings"
+      ]
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.2",
+    "react": "^18.3.1"
+  }
+}

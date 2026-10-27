@@ -1,0 +1,7 @@
+# dsh-key-switch：一个 provider 路由下挂多把 API key，点一下切换
+#
+# 宿主半边注册 /plugins/dsh-key-switch/* 的同源路由：读状态、添加、切换、
+# 删除、改备注。切换通过 harness 的 credentials seam 写值，下一次模型调用生效。
+- insert:
+    - id: dsh-key-switch
+      name: dsh-key-switch
