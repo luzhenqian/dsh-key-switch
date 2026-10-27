@@ -12,6 +12,7 @@ In dsh, `deepseek-official` is a **single provider route** with exactly one cred
 - **Click to switch**: a menu lists every pooled key with its note, masked value and balance; clicking a row activates that key for the next model call — **no restart**
 - **Per-key balances** from `api.deepseek.com/user/balance`, queried by the host process, cached for 60 s, with a manual refresh, multi-currency aware (CNY / USD)
 - **Management page** in Settings (`API Key 管理`): add, remove, switch, annotate
+- **Balance trend**: a step chart (24h / 7d / 30d) with spent-today, daily burn and days-left; each sidebar row also carries a 24h sparkline
 - **Native look**: every size and colour comes from dsh's own `--dsw-*` design tokens, so light and dark themes follow automatically
 
 ## Install
@@ -42,6 +43,35 @@ UI text follows the dsh language setting (Settings → General → Language). Si
 | Русский `ru` | registered by the plugin, falls back to `en` |
 
 dsh itself only ships Chinese and English chrome: under Japanese, Korean or Russian the shell falls back to English while this plugin's own text stays in the chosen language.
+
+## Balance trend
+
+The official platform gives you a **daily-bucketed spend report** — it answers "how much did I spend". This plugin answers a different question: **how much is left, and how long will it last**.
+
+One sample is recorded each time a balance is fetched, drawn as a step chart, with three numbers:
+
+| Number | Meaning |
+| --- | --- |
+| Spent today | first sample of today minus the last, in the account's own currency |
+| Daily burn | actual spend over the last 7 days ÷ observed days (0 when nothing was spent) |
+| Days left | current balance ÷ daily burn; shows — instead of inventing a number when nothing is being spent |
+
+The line is a **step**, not a slope: a balance is a step function, and a slope would pretend money drains at a constant rate. Gaps longer than 3× the median interval break the line instead of connecting a fake segment; failed queries are recorded too, leaving a gap rather than a dive to zero.
+
+### Where the data lives
+
+`$DSH_HOME/dsh-key-switch/balances.jsonl`, append-only, one sample per line, mode `0600`:
+
+```json
+{"v":1,"t":1793128276356,"k":"k_mvqbpnx1_ojvu2w","c":"CNY","b":"26.43","g":"0.00","u":"26.43"}
+```
+
+Only the pool's stable key id is stored — never the key itself. Identical values are recorded at most every 5 minutes; raw points are kept for 7 days, compressed to hourly for 7–90 days, then dropped (automatic, no maintenance). Two keys for 90 days is roughly 1 MB.
+
+### What it is not
+
+- Not continuous monitoring: nothing is sampled while dsh isn't running, so those stretches are gaps
+- Not a replacement for the official bill: the platform's daily report remains the authoritative number
 
 ## Data and security
 
