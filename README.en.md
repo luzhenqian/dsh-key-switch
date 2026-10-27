@@ -13,6 +13,7 @@ In dsh, `deepseek-official` is a **single provider route** with exactly one cred
 - **Per-key balances** from `api.deepseek.com/user/balance`, queried by the host process, cached for 60 s, with a manual refresh, multi-currency aware (CNY / USD)
 - **Management page** in Settings (`API Key 管理`): add, remove, switch, annotate
 - **Balance trend**: a step chart (24h / 7d / 30d) with spent-today, daily burn and days-left; each sidebar row also carries a 24h sparkline
+- **Automation (off by default)**: switch to a healthier account when the balance drops below a threshold, or even out consumption across accounts by weight
 - **Native look**: every size and colour comes from dsh's own `--dsw-*` design tokens, so light and dark themes follow automatically
 
 ## Install
@@ -72,6 +73,37 @@ Only the pool's stable key id is stored — never the key itself. Identical valu
 
 - Not continuous monitoring: nothing is sampled while dsh isn't running, so those stretches are gaps
 - Not a replacement for the official bill: the platform's daily report remains the authoritative number
+
+## Automation
+
+Two switches, **both off by default**. While they are off the plugin only reads — it never touches your keys.
+
+### Switch when the balance runs low
+
+When the active key drops below the threshold, switch to the key with the largest balance **in the same currency**.
+
+- Acts only when the balance is actually known and a candidate is also above the threshold; with no healthy candidate it stays put
+- **Never compares across currencies**: ¥10 and $10 are not the same thing
+- 30-minute cooldown, so it does not flap around the threshold
+
+### Balance spend by weight
+
+For "make both accounts drain at the same rate", or "use the company account first, keep the personal one in reserve".
+
+It compares **the fraction of each account's own balance that has been burned**, not amounts, so no exchange rate is needed:
+
+```
+depletion = spent in window ÷ (current balance + spent)
+score     = depletion ÷ weight
+```
+
+When the active key's score exceeds the lowest by more than the tolerance (20 points by default), it switches to the lowest. A weight of 2 means that account may burn twice as much as the others before being switched away.
+
+The window defaults to 7 days; with zero spend nothing is evaluated (no spend, no switch).
+
+### Storage
+
+`$DSH_HOME/dsh-key-switch/policy.json` (`0600`), including the last action for display and cooldown. Switching goes through exactly the same "rewrite the credential file and read it back" path as a manual switch.
 
 ## Data and security
 
