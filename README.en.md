@@ -28,6 +28,21 @@ The plugin writes the selected value into the credential entry referenced by `de
 
 If an environment variable shadows the same name, it wins over the file — the UI says so instead of silently doing nothing.
 
+## Languages
+
+UI text follows the dsh language setting (Settings → General → Language). Six languages ship with the plugin:
+
+| Language | Notes |
+| --- | --- |
+| 简体中文 `zh` | built in |
+| English `en` | built in (fallback for missing keys) |
+| 繁體中文 `zh-Hant` | registered by the plugin, chain `zh-Hant → zh → en` |
+| 日本語 `ja` | registered by the plugin, falls back to `en` |
+| 한국어 `ko` | registered by the plugin, falls back to `en` |
+| Русский `ru` | registered by the plugin, falls back to `en` |
+
+dsh itself only ships Chinese and English chrome: under Japanese, Korean or Russian the shell falls back to English while this plugin's own text stays in the chosen language.
+
 ## Data and security
 
 | Item | Detail |
