@@ -11,7 +11,7 @@ In dsh, `deepseek-official` is a **single provider route** with exactly one cred
 - **Sidebar balance entry** above Settings, showing the active key's balance, refreshed every 60 s
 - **Click to switch**: a menu lists every pooled key with its note, masked value and balance; clicking a row activates that key for the next model call — **no restart**
 - **Per-key balances** from `api.deepseek.com/user/balance`, queried by the host process, cached for 60 s, with a manual refresh, multi-currency aware (CNY / USD)
-- **Management page** at Settings → `Key 切换`: add, remove, switch, annotate
+- **Management page** in Settings (`API Key 管理`): add, remove, switch, annotate
 - **Native look**: every size and colour comes from dsh's own `--dsw-*` design tokens, so light and dark themes follow automatically
 
 ## Install
@@ -20,7 +20,7 @@ In dsh, `deepseek-official` is a **single provider route** with exactly one cred
 dsh plugin --profile web add dsh-key-switch
 ```
 
-Restart `dsh web` once (plugin layers load at boot), then open **Settings → Key 切换** and paste your keys.
+Restart `dsh web` once (plugin layers load at boot), then open the plugin section in Settings (labelled **API Key 管理**) and paste your keys.
 
 ## How switching works
 
