@@ -54,7 +54,7 @@ dsh itself only ships Chinese and English chrome: under Japanese, Korean or Russ
 
 ## Status
 
-Tested on **DSH 0.1.5-rc.3** with the Web profile (macOS / Chrome). Known limits: DeepSeek official balances only; one key per provider route (a dsh constraint); multiple dsh tabs on the same origin can starve new requests through the browser's six-connection limit.
+Tested on **DSH 0.1.5-rc.3** with the Web profile (macOS / Chrome). Known limits: DeepSeek official balances only; one key per provider route (a dsh constraint); multiple dsh tabs on the same origin can starve new requests through the browser's six-connection limit. The settings-nav glyph is chosen by the host from a hardcoded section-id table (third-party sections always get the gear), so the plugin swaps it for a key icon at the DOM level — if the host changes the nav structure the icon falls back to the gear and nothing else breaks.
 
 ## License
 
