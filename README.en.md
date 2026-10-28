@@ -110,7 +110,7 @@ The window defaults to 7 days; with zero spend nothing is evaluated (no spend, n
 | Item | Detail |
 | --- | --- |
 | Key storage | `$DSH_HOME/dsh-key-switch/keys.json`, mode `0600` (plain text — without the value there is nothing to switch) |
-| What the browser sees | `****` + last 4 characters only |
+| What the browser sees | Normally `****` + last 4 characters. Only when you press Show or Copy does the host return that one key over a same-origin POST; the UI hides it again after 30 seconds |
 | Write endpoints | Require the same-origin session cookie |
 | Balance requests | Issued by the host process to `api.deepseek.com`; no third-party calls, no telemetry |
 
