@@ -42,6 +42,18 @@ check("单点不出图", buildStepPath([{ t: now, v: "1", ok: true }], 600, 120,
 check("空数据不出图", buildStepPath([], 600, 120, 6) === null);
 check("全是失败点不出图", buildStepPath([{ t: now, ok: false }, { t: now - HOUR, ok: false }], 600, 120, 6) === null);
 
+// 5) 圆点/气泡定位必须和折线端点重合（用同一套映射）
+const p5 = buildStepPath(slow, 600, 120, 6);
+const first = p5.d.match(/M ([\d.]+) ([\d.]+)/);
+const lastPoint = slow[slow.length - 1];
+const dotX = p5.xFrac(slow[0].t) * 600;
+const dotY = p5.yFrac(Number(slow[0].v)) * 120;
+check("圆点 x 与折线起点重合", Math.abs(dotX - Number(first[1])) < 0.2, `${dotX.toFixed(1)} vs ${first[1]}`);
+check("圆点 y 与折线起点重合", Math.abs(dotY - Number(first[2])) < 0.2, `${dotY.toFixed(1)} vs ${first[2]}`);
+const coords = p5.d.match(/-?[\d.]+/g).map(Number);
+const endX = coords[coords.length - 2];
+check("末点 xFrac 与折线终点重合", Math.abs(p5.xFrac(lastPoint.t) * 600 - endX) < 0.2, `${(p5.xFrac(lastPoint.t) * 600).toFixed(1)} vs ${endX}`);
+
 if (problems.length) {
   console.error("✗ 图表自测失败：");
   for (const p of problems) console.error("  - " + p);
