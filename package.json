@@ -1,6 +1,6 @@
 {
   "name": "dsh-key-switch",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "DeepSeek Harness plugin: keep several DeepSeek API keys, switch the active one in one click, and see each key's live balance in the sidebar. 多个 API Key 池 + 一键切换 + 实时余额。",
   "type": "module",
   "license": "MIT",
